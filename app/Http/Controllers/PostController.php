@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Post;
+use DB;
 class PostController extends Controller
 {
     /**
@@ -11,6 +13,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $statusCode = 200;
+    public $result = false;
+    public $message = 'Error in the request';
+    public $records = array();
+
     public function index()
     {
         //
@@ -23,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,7 +41,47 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $post = DB::transaction(function() use ($request)
+            {
+                $post = Post::create(
+                    [
+                        'user_id'     => $request->input('user_id'),
+                        'film_id'     => $request->input('film_id'),
+                        'comment'     => $request->input('comment'),
+                        'comment_date'=> date("Y-m-d H:m:s", strtotime($request->input('comment_date')))
+                    ]);
+
+                if(!$post)
+                {
+                    throw new \Exception('An error has occurred');
+                }else
+                {
+                    return $post;
+                }
+            });
+
+            $this->statusCode = 200;
+            $this->message    = "Post created";
+            $this->result     = true;
+            $this->records    = $post;
+        }
+        catch(\Exception $ex)
+        {
+            $this->statusCode = 200;
+            $this->message    = 'Something went wrong';
+            $this->result     = false;
+        }
+        finally
+        {
+            $response =
+            [
+                'message' => $this->message,
+                'result'  => $this->result,
+                'records' => $this->records,
+            ];
+            return response()->json($response, $this->statusCode);
+        }
     }
 
     /**
