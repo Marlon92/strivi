@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Origin, Content-Type');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header("Content-Type: application/json; charset=utf-8");
-header('Access-Control-Allow-Headers: Content-Type, x-xsrf-token, x_csrftoken, x-requested-with');
+header('Access-Control-Allow-Headers: Content-Type, x-xsrf-token, x_csrftoken, x-requested-with, Authorization');
 
 use Illuminate\Http\Request;
 
