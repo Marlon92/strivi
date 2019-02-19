@@ -107,10 +107,10 @@ class FilmController extends Controller
    public function filmBySlug($slug)
     {
         try {
-            $records = GenreFilm::whereHas('film', function($q) use($slug){
+            $records = Film::whereHas('GenreFilm', function($q) use($slug){
                 $q->where('slug', $slug);
-            })->with('film','genre', 'film.post')->get();
-        
+            })->with('GenreFilm.genre', 'post', 'post.user')->get();
+            
             $this->status_code = 200;
             $this->result      = true;
             $this->message     = 'Registros consultados correctamente';

@@ -33,12 +33,32 @@ class PostController extends Controller
         
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function postBySlug($slug)
+    {
+        try {
+            $records = Post::whereHas('film', function($q) use($slug){
+                $q->where('slug', $slug);
+            })->orderBy('comment_date', 'desc')->with('user')->get();
+            
+            $this->status_code = 200;
+            $this->result      = true;
+            $this->message     = 'Registros consultados correctamente';
+            $this->records     = $records;
+        } catch (\Exception $e) {
+            $this->status_code = 400;
+            $this->result      = false;
+            $this->message     = env('APP_DEBUG')?$e->getMessage():$this->message;
+        }finally{
+            $response = [
+                'result'  => $this->result,
+                'message' => $this->message,
+                'records' => $this->records,
+            ];
+
+            return response()->json($response, $this->status_code);
+        }
+    }
+
     public function store(Request $request)
     {
         try{
@@ -49,7 +69,7 @@ class PostController extends Controller
                         'user_id'     => $request->input('user_id'),
                         'film_id'     => $request->input('film_id'),
                         'comment'     => $request->input('comment'),
-                        'comment_date'=> date("Y-m-d H:m:s", strtotime($request->input('comment_date')))
+                        'comment_date'=> date("Y-m-d H:m:s")
                     ]);
 
                 if(!$post)

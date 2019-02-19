@@ -11,10 +11,10 @@ class Post extends Model
     ];
 
     public function user(){
-    	return $this->hasOne('App\Menu','id','user_id');
+    	return $this->hasOne('App\User','id','user_id');
 	}
 
 	public function film(){
-    	return $this->hasOne('App\Menu','id','film_id');
+    	return $this->hasOne('App\Film','id','film_id');
 	}
 }
