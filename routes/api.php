@@ -44,6 +44,7 @@ Route::get('post/{slug}', 'PostController@postBySlug');
 Route::post('films/create', 'FilmController@store');
 Route::post('post', 'PostController@store');
 Route::resource('countries', 'CountryController');
+Route::resource('genres', 'GenreController');
 
 	
 

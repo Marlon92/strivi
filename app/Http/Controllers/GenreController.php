@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Genre;
 
 class GenreController extends Controller
 {
@@ -11,9 +12,37 @@ class GenreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $statusCode = 200;
+    public $result = false;
+    public $message = 'Error in the request';
+    public $records = array();
+
     public function index()
     {
-        //
+        try{
+            $genres = Genre::all();
+            if($genres){
+                $this->statusCode = 200;
+                $this->result = true;
+                $this->message = 'Success';
+                $this->records = $genres;
+            }else{
+                $this->statusCode = 200;
+                $this->result = false;
+                $this->message = 'The movies could not be obtained';
+            }
+        }catch(\Exception $ex){
+            $this->statusCode = 200;
+            $this->result = false;
+            $this->message = env('APP_DEBUG') ? $e->getMessage() : $this->message;
+        }finally{
+            $response=[
+                'message' => $this->message,
+                'result'  => $this->result,
+                'records' => $this->records
+            ];
+            return response()->json($response, $this->statusCode);
+        }
     }
 
     /**

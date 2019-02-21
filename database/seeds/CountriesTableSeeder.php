@@ -12,11 +12,15 @@ class CountriesTableSeeder extends Seeder
     public function run()
     {
         App\Country::create([
-       	    'name' => 'Estados Unidos'
+       	    'name' => 'United States'
         ]);
 
         App\Country::create([
        	    'name' => 'England'
         ]);
+
+        App\Country::create([
+            'name' => 'Spain'
+     ]);
     }
 }

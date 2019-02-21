@@ -19,7 +19,7 @@ class PostsTableSeeder extends Seeder
         ]);
 
         App\Post::create([
-       	    'user_id' => 2,
+       	    'user_id' => 1,
        	    'film_id' => 1,
        	    'comment' => 'Its the best movie of the world.',
        	    'comment_date' => '2019-04-27 11:20:00'
@@ -33,7 +33,7 @@ class PostsTableSeeder extends Seeder
         ]);
 
         App\Post::create([
-       	    'user_id' => 2,
+       	    'user_id' => 1,
        	    'film_id' => 2,
        	    'comment' => 'Its the best movie of the world.',
        	    'comment_date' => '2019-04-27 14:20:00'
@@ -47,7 +47,7 @@ class PostsTableSeeder extends Seeder
         ]);
 
         App\Post::create([
-       	    'user_id' => 2,
+       	    'user_id' => 1,
        	    'film_id' => 3,
        	    'comment' => 'Its the best movie of the world.',
        	    'comment_date' => '2019-04-27 22:20:00'

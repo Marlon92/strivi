@@ -17,7 +17,7 @@ class FilmsTableSeeder extends Seeder
        	    'release_date' => '2019-04-27 00:00:00',
             'rating' => 5,
             'ticket_price' => 25,
-            'photo' => '',
+            'photo' => 'assets/images/avengers.png',
             'slug' => 'avengers'
         ]);
 
@@ -28,7 +28,7 @@ class FilmsTableSeeder extends Seeder
        	    'release_date' => '2019-03-24 00:00:00',
             'rating' => 4,
             'ticket_price' => 20,
-            'photo' => '',
+            'photo' => 'assets/images/captainmarvel.png',
             'slug' => 'cap-marvel'
         ]);
 
@@ -39,7 +39,7 @@ class FilmsTableSeeder extends Seeder
        	    'release_date' => '2019-05-14 00:00:00',
             'rating' => 3,
             'ticket_price' => 15,
-            'photo' => '',
+            'photo' => 'assets/images/dumbo.png',
             'slug' => 'dumbo'
         ]);
     }

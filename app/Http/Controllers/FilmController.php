@@ -60,17 +60,20 @@ class FilmController extends Controller
         try{
             $filename = '';
             $path = '';
+            $pathDB = '';
+            $a = 0;
             $film = DB::transaction(function() use ($request)
             {
-                if($request->hasfile('photo')) 
-                { 
-                    $file = $request->file('photo');
-                    $extension = $file->getClientOriginalExtension(); // getting image extension
-                    $nameWithoutExtension = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $filename = $nameWithoutExtension.time().'.'.$extension;
-                    $path = 'assets/images/';
-                    $file->move($path, $filename);
-                }
+                $file = $request->input('photo');
+                $extension = explode('/', mime_content_type($request->input('photo')))[1]; //find the extenson file
+                //$file = base64_decode($file);
+                $file = str_replace('data:image/'.$extension.';base64,', '', $file);
+                $file = str_replace(' ', '+', $file);
+                $nameWithoutExtension = $request->input('imgName');
+                $filename = $nameWithoutExtension.time().'.'.'png';
+                $path = public_path().'/strivySite/src/assets/images/'.$filename;
+                \File::put($path, base64_decode($file));
+                $pathDB = 'assets/images/';
                 $film = Film::create(
                     [
                         'name'         => $request->input('name'),
@@ -79,20 +82,22 @@ class FilmController extends Controller
                         'rating'        => $request->input('rating'),
                         'ticket_price'    => $request->input('ticket_price'),
                         'country_id'       => $request->input('country_id'),
-                        'photo'       => $path.$filename,
+                        'photo'       => $pathDB.$filename,
                         'slug'       => $request->input('slug'),
                     ]);
-
+                    
                 if(!$film)
                 {
                     throw new \Exception('An error has occurred');
                 }else
                 {
+                    
                     foreach ($request->input('genres') as $genre) {
+                        $genre=(object) $genre;
                         $genresFilm = GenreFilm::create(
                         [
                             'film_id'   => $film->id,
-                            'genre_id'    => $genre
+                            'genre_id'  => $genre->id,
                         ]);
                     }
                     return $film;
