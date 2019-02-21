@@ -58,8 +58,19 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         try{
+            $filename = '';
+            $path = '';
             $film = DB::transaction(function() use ($request)
             {
+                if($request->hasfile('photo')) 
+                { 
+                    $file = $request->file('photo');
+                    $extension = $file->getClientOriginalExtension(); // getting image extension
+                    $nameWithoutExtension = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $filename = $nameWithoutExtension.time().'.'.$extension;
+                    $path = 'assets/images/';
+                    $file->move($path, $filename);
+                }
                 $film = Film::create(
                     [
                         'name'         => $request->input('name'),
@@ -68,7 +79,7 @@ class FilmController extends Controller
                         'rating'        => $request->input('rating'),
                         'ticket_price'    => $request->input('ticket_price'),
                         'country_id'       => $request->input('country_id'),
-                        'photo'       => $request->input('photo'),
+                        'photo'       => $path.$filename,
                         'slug'       => $request->input('slug'),
                     ]);
 
@@ -77,6 +88,13 @@ class FilmController extends Controller
                     throw new \Exception('An error has occurred');
                 }else
                 {
+                    foreach ($request->input('genres') as $genre) {
+                        $genresFilm = GenreFilm::create(
+                        [
+                            'film_id'   => $film->id,
+                            'genre_id'    => $genre
+                        ]);
+                    }
                     return $film;
                 }
             });

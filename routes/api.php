@@ -43,9 +43,7 @@ Route::get('films/{slug}',   'FilmController@filmBySlug');
 Route::get('post/{slug}', 'PostController@postBySlug');
 Route::post('films/create', 'FilmController@store');
 Route::post('post', 'PostController@store');
-Route::resource('measures','MeasureController');
-Route::resource('orders', 'OrderController');
-Route::resource('orderDetails', 'OrderDetailsController');
+Route::resource('countries', 'CountryController');
 
 	
 
