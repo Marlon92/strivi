@@ -103,7 +103,6 @@ class FilmController extends Controller
                     return $film;
                 }
             });
-
             $this->statusCode = 200;
             $this->message    = "Film created successfully";
             $this->result     = true;
